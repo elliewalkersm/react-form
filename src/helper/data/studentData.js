@@ -14,9 +14,15 @@ const addStudent = (student) => new Promise((resolve, reject) => {
     .then((response) => {
       const body = { firebaseKey: response.data.name };
       axios.patch(`${dbURL}/students/${response.data.name}.json`, body)
-        .then(() => resolve(console.warn('Student Added', student)));
+        .then(() => getStudents().then((studentArray) => resolve(studentArray)));
     })
     .catch((error) => reject(error));
 });
 
-export { addStudent, getStudents };
+const deleteStudent = (firebasekey) => new Promise((resolve, reject) => {
+  axios.delete(`${dbURL}/students/${firebasekey}.json`)
+    .then(() => getStudents().then((studentArray) => resolve(studentArray)))
+    .catch((error) => reject(error));
+});
+
+export { addStudent, getStudents, deleteStudent };
