@@ -19,10 +19,18 @@ const addStudent = (student) => new Promise((resolve, reject) => {
     .catch((error) => reject(error));
 });
 
-const deleteStudent = (firebasekey) => new Promise((resolve, reject) => {
-  axios.delete(`${dbURL}/students/${firebasekey}.json`)
+const deleteStudent = (firebaseKey) => new Promise((resolve, reject) => {
+  axios.delete(`${dbURL}/students/${firebaseKey}.json`)
     .then(() => getStudents().then((studentArray) => resolve(studentArray)))
     .catch((error) => reject(error));
 });
 
-export { addStudent, getStudents, deleteStudent };
+const updateStudent = (student) => new Promise((resolve, reject) => {
+  axios.patch(`${dbURL}/students/${student.firebaseKey}.json`, student)
+    .then(() => getStudents().then(resolve))
+    .catch((error) => reject(error));
+});
+
+export {
+  addStudent, getStudents, deleteStudent, updateStudent
+};

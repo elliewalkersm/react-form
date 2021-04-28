@@ -1,12 +1,21 @@
 import React, { useState } from 'react';
+import { FormGroup } from 'reactstrap';
 import PropTypes from 'prop-types';
-import { addStudent } from './helper/data/studentData';
+import { addStudent, updateStudent } from './helper/data/studentData';
 
-const StudentForm = ({ formTitle, setStudents }) => {
+const StudentForm = ({
+  formTitle,
+  setStudents,
+  name,
+  teacher,
+  grade,
+  firebaseKey
+}) => {
   const [student, setStudent] = useState({
-    name: '',
-    teacher: '',
-    grade: 0
+    name: name || '',
+    teacher: teacher || '',
+    grade: grade || 0,
+    firebaseKey: firebaseKey || null
   });
 
   const handleInputChange = (e) => {
@@ -18,7 +27,11 @@ const StudentForm = ({ formTitle, setStudents }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    addStudent(student).then((studentArray) => setStudents(studentArray));
+    if (student.firebaseKey) {
+      updateStudent(student).then((studentArray) => setStudents(studentArray));
+    } else {
+      addStudent(student).then((studentArray) => setStudents(studentArray));
+    }
   };
 
   return (
@@ -30,6 +43,7 @@ const StudentForm = ({ formTitle, setStudents }) => {
       onSubmit={handleSubmit}
       >
         <h2>{formTitle}</h2>
+        <FormGroup>
         <label>Name: </label>
         <input
         name='name'
@@ -38,7 +52,9 @@ const StudentForm = ({ formTitle, setStudents }) => {
         value={student.name}
         onChange={handleInputChange}
         ></input>
+        </FormGroup>
 
+        <FormGroup>
         <label>Teacher: </label>
         <input
           name='teacher'
@@ -47,7 +63,9 @@ const StudentForm = ({ formTitle, setStudents }) => {
           value={student.teacher}
           onChange={handleInputChange}
         ></input>
+        </FormGroup>
 
+        <FormGroup>
         <label>Grade: </label>
         <input
           name='grade'
@@ -56,6 +74,8 @@ const StudentForm = ({ formTitle, setStudents }) => {
           value={student.grade}
           onChange={handleInputChange}
         ></input>
+        </FormGroup>
+
         <button type='submit'>Submit</button>
       </form>
     </div>
@@ -65,7 +85,11 @@ const StudentForm = ({ formTitle, setStudents }) => {
 
 StudentForm.propTypes = {
   formTitle: PropTypes.string.isRequired,
-  setStudents: PropTypes.func
+  setStudents: PropTypes.func,
+  name: PropTypes.string,
+  teacher: PropTypes.string,
+  grade: PropTypes.number,
+  firebaseKey: PropTypes.string
 };
 
 export default StudentForm;
