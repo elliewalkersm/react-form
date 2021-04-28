@@ -37,12 +37,12 @@ const StudentCard = ({
       <CardText>Grade: {grade}</CardText>
       <CardText>Teacher: {teacher}</CardText>
       <Button color="danger" onClick={() => handleClick('delete')}>Delete Student</Button>
-      <Button color="info" onClick={() => handleClick('Update')}>
+      <Button color="info" onClick={() => handleClick('update')}>
         {updating ? 'Close Form' : 'Update Student'}
       </Button>
       {
         updating && <StudentForm
-          formTitle='Edit Student'
+          formTitle='Update Student'
           setStudents={setStudents}
           firebaseKey={firebaseKey}
           name={name}
